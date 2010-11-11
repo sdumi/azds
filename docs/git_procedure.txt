@@ -6,3 +6,9 @@ GIT PROCEDURE
 3. develop develop develop develop
 4. git push
      - resolve conflicts: maybe merge...
+
+Usefull commands:
+git commit -m "<your commit comment?"           # check in modified files
+git status 					# shows current status: modified files...
+git add FILE1 [FILE2] [...]			# adds files to git/commit pool
+git rm FILE1 [FILE2] [...]			# removes files from git
