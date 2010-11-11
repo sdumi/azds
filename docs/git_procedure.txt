@@ -1,0 +1,8 @@
+GIT PROCEDURE
+
+1. cd <git repository>/dfd
+2. git pull
+     - resolve conflicts: maybe merge...
+3. develop develop develop develop
+4. git push
+     - resolve conflicts: maybe merge...
