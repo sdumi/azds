@@ -1,0 +1,31 @@
+1) Overview
+
+  DFD contains three major components:
+    a) DFDApi:    generic mechanisms: rsync client/server behavior
+    b) DFDClient: a client which uses/overrides DFDApi
+    c) DFDServer: a server --||--
+
+2) Processes
+
+  DFD will have two main processes: 'DFDClient' and 'DFDServer' and possibly several more test utilities.
+  
+3) Details
+
+  a) DFDApi:
+    i) rsync algorithm API
+       - checksums, message set generic handling
+   ii) rsync client behavior implementation
+       - msgSet specific implementation
+  iii) rsync server behavior implementation
+       - msgSet specific implementation
+   iv) rsync message set definition
+
+  b) DFDClient:
+    - establish connection to server
+    - process input file(s), directories
+    - use a.ii) or a.iii) depending on the desired role: push or pull file
+
+  c) DFDServer:
+    - accept incomming connections (multiple clients)
+    - use a.ii) or a.iii) depending on the desired role: push or pull file
+    - notify/accept commands from Moredevs_StorageServer
