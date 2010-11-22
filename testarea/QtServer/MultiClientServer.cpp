@@ -7,7 +7,9 @@
  * -----------------------------------------------------------------------------
  * | Release  | Date       | Name       | History
  * -----------------------------------------------------------------------------
- * | 0.001    | 21.11.2010 | dumi       | introduce SSL on server side
+ * | 0.001    | 22.11.2010 | dumi       | introduce SSL on server side
+ * |          | 22.11.2010 | dumi       | cleanup: handleNewConnection() replaced by
+ * |          |            |            |   incomingConnection()
  * -----------------------------------------------------------------------------
  *
  */
@@ -24,7 +26,6 @@ MultiClientServer::MultiClientServer(int port_)
     this->_PORT_ = port_;
 
     connect (&messageTimer, SIGNAL(timeout()), this, SLOT (sendMessageToAllClients()));
-    connect (this, SIGNAL(newConnection()), this, SLOT (handleNewConnection()));
 }
 
 ////////////////////////////////////////////////////////////
@@ -55,32 +56,11 @@ void MultiClientServer::start()
 }
 
 ////////////////////////////////////////////////////////////
-// DS: functionality offered by ::incomingConnection().
-//     no need for ::handleNewConnection anymore
-// void MultiClientServer::handleNewConnection()
-// {
-//     cout << "MultiClientServer::handleNewConnection()" << endl;
-
-//     while (hasPendingConnections())
-//     {
-//         QTcpSocket *client = nextPendingConnection();
-//         connect (client, SIGNAL (disconnected()), this, SLOT(clientDisconnected()));
-//         this->clientConnections.append(qobject_cast<QSslSocket *>(client));
-
-//         qDebug() << "new client connected";
-//         qDebug() << "clients logged in: " << clientConnections.length();
-
-//         this->sendHello(qobject_cast<QSslSocket *>(client));
-//     }
-// }
-
-////////////////////////////////////////////////////////////
 //
 void MultiClientServer::clientDisconnected()
 {
     cout << "MultiClientServer::clientDisconnected()" << endl;
 
-//  QTcpSocket *client = qobject_cast<QTcpSocket *> (sender());
     QSslSocket *client = qobject_cast<QSslSocket *> (sender());
     if (!client)
         return;
@@ -108,17 +88,12 @@ void MultiClientServer::sendHello(QSslSocket *client_)
 void MultiClientServer::sendMessageToAllClients()
 {
 //    cout << "MultiClientServer::sendMessageToAllClients()" << endl;
-
     QString message = QString ("The current time is: %1\n").arg(QTime::currentTime().toString ("hh:mm:ss"));
 
     foreach (QSslSocket *client, clientConnections)
     {
         client->write (message.toLatin1());
-//        cout << ".";
     }
-//    cout << endl;
-//    cout << "nr of clients: " << clientConnections.length() << endl;
-
 }
 
 ////////////////////////////////////////////////////////////
@@ -138,8 +113,6 @@ void MultiClientServer::incomingConnection(int socketDescriptor)
 
         serverSocket->startServerEncryption();
         cout << " done." << endl;
-//        cout << "waiting for encryption...";
-//        serverSocket->ignoreSslErrors();
     }
     else
     {
@@ -152,7 +125,6 @@ void MultiClientServer::incomingConnection(int socketDescriptor)
 void MultiClientServer::ready()
 {
     cout << "MultiClientServer::ready()" << endl;
-//    sendMessageToAllClients();
     QSslSocket *client = qobject_cast<QSslSocket *> (sender());
 
     connect (client, SIGNAL (disconnected()), this, SLOT(clientDisconnected()));

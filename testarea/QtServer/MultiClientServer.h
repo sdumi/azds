@@ -8,6 +8,8 @@
  * | Release  | Date       | Name       | History
  * -----------------------------------------------------------------------------
  * | 0.001    | 22.11.2010 | dumi       | introduce SSL on server side
+ * |          | 22.11.2010 | dumi       | cleanup: handleNewConnection() replaced by
+ * |          |            |            |   incomingConnection()
  * -----------------------------------------------------------------------------
  *
  */
@@ -28,14 +30,12 @@ protected:
   void incomingConnection(int socketDescriptor);
 
 protected slots:
-//  void handleNewConnection ();
   void clientDisconnected ();
   void sendMessageToAllClients();
   void ready();
 
 private:
   int _PORT_;
-//  QList <QTcpSocket *> clientConnections;
   QList <QSslSocket *> clientConnections;
   QTimer messageTimer;
 

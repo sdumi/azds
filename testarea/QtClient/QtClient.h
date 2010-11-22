@@ -8,6 +8,7 @@
  * | Release  | Date       | Name       | History
  * -----------------------------------------------------------------------------
  * | 0.001    | 21.11.2010 | dumi       | introduce SSL on client side
+ * |          | 22.11.2010 | dumi       | cleanup: remove some unused signals
  * -----------------------------------------------------------------------------
  */
 
@@ -29,15 +30,14 @@ public:
 
 protected slots:
     void clientConnected ();
-    void read ();
     void showError ();
     void ready();
     // handle the signal: QSslSocket.sslErrors()
     void errorOccured(const QList<QSslError> &error);
+
 private:
     int port;
     QSslSocket *client;
-
 };
 
 #endif /* QTCLIENT_H_ */

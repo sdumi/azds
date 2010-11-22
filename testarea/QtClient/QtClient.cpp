@@ -8,6 +8,7 @@
  * | Release  | Date       | Name       | History
  * -----------------------------------------------------------------------------
  * | 0.001    | 21.11.2010 | dumi       | introduce SSL on client side
+ * |          | 22.11.2010 | dumi       | cleanup: remove some unused signals
  * -----------------------------------------------------------------------------
  *
  */
@@ -24,7 +25,6 @@ QtClient::QtClient()
     client = new QSslSocket(this);
 
     connect(client, SIGNAL(connected ()), this, SLOT(clientConnected()));
-    connect(client, SIGNAL(readyRead ()), this, SLOT(read()));
     connect(client, SIGNAL(error (QAbstractSocket::SocketError)), this, SLOT (showError()));
     connect(client, SIGNAL(encrypted()), this, SLOT(ready()));
     connect(client, SIGNAL(sslErrors(const QList<QSslError>&)), this, SLOT(errorOccured(const QList<QSslError>&)));
@@ -60,16 +60,6 @@ bool QtClient::start(QString address, quint16 port)
         cout << "connection failed!" << endl;
         return false;
     }
-    // cout << "waiting for encryption...";
-    // if (client->waitForEncrypted())
-    // {
-    //     cout << " done." << endl;
-    // }
-    // else
-    // {
-    //     cout << " failed." << endl;
-    //     qDebug()<< "  Failure: " << client->errorString() << endl;
-    // }
 
     return true;
 }
@@ -80,22 +70,6 @@ void QtClient::clientConnected()
 {
     cout << "Client connected!"<< endl;
     cout << "current encryption mode: " << client->mode() << endl;
-
-    if (!client->isEncrypted())
-    {
-//        cout << "starting client encryption..." << endl;
-//        client->startClientEncryption();
-    }
-
-}
-
-////////////////////////////////////////////////////////////
-//
-void QtClient::read()
-{
-    QString data(client->readAll());
-
-    cout << data.toStdString() << endl;
 }
 
 ////////////////////////////////////////////////////////////
@@ -112,7 +86,6 @@ void QtClient::ready()
     cout << "SSL socket is ready." << endl;
     QSslCertificate cert = client->peerCertificate();
 
-//    client->write("Hello, world", 13);
     QString data(client->readAll());
 
     cout << data.toStdString() << endl;
