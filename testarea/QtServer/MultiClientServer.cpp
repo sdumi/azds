@@ -21,9 +21,10 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////
 //
-MultiClientServer::MultiClientServer(int port_)
+MultiClientServer::MultiClientServer(int port_, QString certificatePath_)
 {
     this->_PORT_ = port_;
+    this->_certificatePath_ = certificatePath_;
 
     connect (&messageTimer, SIGNAL(timeout()), this, SLOT (sendMessageToAllClients()));
 }
@@ -108,8 +109,8 @@ void MultiClientServer::incomingConnection(int socketDescriptor)
         connect(serverSocket, SIGNAL(encrypted()), this, SLOT(ready()));
         cout << "will start server encryption now...";
 
-        serverSocket->setLocalCertificate("/home/dumitrus/dumcert.pem");
-        serverSocket->setPrivateKey("/home/dumitrus/dumcert.pem");
+        serverSocket->setLocalCertificate(this->_certificatePath_);
+        serverSocket->setPrivateKey(this->_certificatePath_);
 
         serverSocket->startServerEncryption();
         cout << " done." << endl;

@@ -6,26 +6,26 @@
 
 void usage()
 {
-	qDebug() << "Usage:";
-	qDebug() << "\tQtClient <hostname> <port>";
+    qDebug() << "Usage:";
+    qDebug() << "\tQtClient <hostname> <port> <ssl_certificatePath>";
 }
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    if (argc < 3)
+    if (argc < 4)
     {
-    	qDebug() << "Insufficient parameters!";
-    	usage();
-    	exit(0);
+        qDebug() << "Insufficient parameters!";
+        usage();
+        exit(0);
     }
 
-    if (argc > 3)
+    if (argc > 4)
     {
-    	qDebug() << "Too many arguments";
-    	usage();
-    	exit (0);
+        qDebug() << "Too many arguments";
+        usage();
+        exit (0);
     }
 
     QString hostName (argv[1]);
@@ -36,12 +36,12 @@ int main(int argc, char *argv[])
 
     if (!ok)
     {
-    	qDebug() << "Invalid port";
-    	exit (0);
+        qDebug() << "Invalid port";
+        exit (0);
     }
-	
+
     QtClient *cl = new QtClient ();
-    cl->start(hostName, port);
+    cl->start(hostName, port, argv[3]);
 
 
    return a.exec();

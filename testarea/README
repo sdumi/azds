@@ -7,3 +7,37 @@ To compile and link the processes under testarea/...
 If errors occur durin 'make':
  - try deleting 'moc_**' files (if any) and do 'make' again: this if some MOC specific error is received.
  - if not a MOC error: maybe some paths to QT dependencies are missing (ex: I needed to extend LDFLAGS with path to my 'freetype' libraries. In QT extending the LDFLAGS is done by appending to QMAKE_LFLAGS variable from .pro file)
+
+----------
+SSL related:
+ - QtServer and QtClient require an ssl certificate file (an example file is present in this folder (testarea): dfd.pem
+ - dfd.pem was generated with the following command:
+    openssl req -new -x509 -nodes -days 365 -newkey rsa:1024 -keyout dfd.pem -out dfd.pem
+ - all the questions were answered with: '.' (period, full stop)
+   EXCEPTION: "Common Name:" was answered with: 'localhost'
+
+FULL TRANSCRIPT of the generation:
+"""
+~ (12)$ openssl req -new -x509 -nodes -days 365 -newkey rsa:1024 -keyout dfd.pem -out dfd.pem
+Generating a 1024 bit RSA private key
+..........++++++
+...............................++++++
+writing new private key to 'dumcert.pem'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [GB]:.
+State or Province Name (full name) [Berkshire]:.
+Locality Name (eg, city) [Newbury]:.
+Organization Name (eg, company) [My Company Ltd]:.
+Organizational Unit Name (eg, section) []:.
+Common Name (eg, your name or your server's hostname) []:localhost
+Email Address []:.
+
+"""
+----------

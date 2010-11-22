@@ -26,7 +26,7 @@ public:
     QtClient ();
     ~QtClient();
 
-    bool start (QString address, quint16 port);
+    bool start (QString address, quint16 port, QString certificatePath);
 
 protected slots:
     void clientConnected ();

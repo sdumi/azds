@@ -21,30 +21,31 @@
 
 class MultiClientServer : public QTcpServer
 {
-  Q_OBJECT
+    Q_OBJECT
 
-protected:
-  void sendHello (QSslSocket *client);
+    protected:
+    void sendHello (QSslSocket *client);
 
-  // DS: need this to create QSslSockets...
-  void incomingConnection(int socketDescriptor);
+    // DS: need this to create QSslSockets...
+    void incomingConnection(int socketDescriptor);
 
 protected slots:
-  void clientDisconnected ();
-  void sendMessageToAllClients();
-  void ready();
+    void clientDisconnected ();
+    void sendMessageToAllClients();
+    void ready();
 
 private:
-  int _PORT_;
-  QList <QSslSocket *> clientConnections;
-  QTimer messageTimer;
+    int _PORT_;
+    QString _certificatePath_;
+    QList <QSslSocket *> clientConnections;
+    QTimer messageTimer;
 
 public:
-  MultiClientServer(int port_);
-  ~MultiClientServer();
+    MultiClientServer(int port_, QString certificatePath);
+    ~MultiClientServer();
 
-  void start();
-  void stop();
+    void start();
+    void stop();
 };
 
 #endif /* MULTICLIENTSERVER_H_ */

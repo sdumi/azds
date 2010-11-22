@@ -39,18 +39,17 @@ QtClient::~QtClient()
 
 ////////////////////////////////////////////////////////////
 //
-bool QtClient::start(QString address, quint16 port)
+bool QtClient::start(QString address, quint16 port, QString certificatePath)
 {
     QHostAddress addr(address);
-
     cout << "connecting to: " << address.toStdString() << " port: " << port << endl;
     // DS: this is used for plain TCP connections
     //    client->connectToHost(addr, port);
 
     // DS: for SSL connections we need to connect via 'connectToHostEncrypted()'
     //       which does the handshake for us
-    client->setLocalCertificate("/home/dumitrus/dumcert.pem");
-    client->setPrivateKey("/home/dumitrus/dumcert.pem");
+    client->setLocalCertificate(certificatePath);
+    client->setPrivateKey(certificatePath);
     client->connectToHostEncrypted(address, port);
     client->ignoreSslErrors();
 
