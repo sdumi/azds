@@ -9,25 +9,27 @@
 #define QTCLIENT_H_
 
 #include <QtNetwork>
+#include <QSslSocket>
 
 class QtClient : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	int port;
-	QTcpSocket *client;
+    int port;
+    QSslSocket *client;
 
 public:
-	QtClient ();
-	~QtClient();
+    QtClient ();
+    ~QtClient();
 
-	bool start (QString address, quint16 port);
+    bool start (QString address, quint16 port);
 
 protected slots:
-	void clientConnected ();
-	void read ();
-	void showError ();
+    void clientConnected ();
+    void read ();
+    void showError ();
+    void ready();
 };
 
 #endif /* QTCLIENT_H_ */
